@@ -1,4 +1,4 @@
-namespace PetFamily.Domain.Volunteer;
+namespace PetFamily.Domain.Species;
 
 public class Breed
 {

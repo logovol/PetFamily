@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.Species;
 
-namespace PetFamily.Domain.Volunteer;
+namespace PetFamily.Domain.Volunteers;
 
 public class Pet
 {
@@ -9,17 +10,18 @@ public class Pet
     {
     }
     
-    private Pet(Status status, Guid volunteerId, string nickname)
+    private Pet(PetId petId, Status status, Guid volunteerId, string nickname)
     {
+        Id = petId;
         PetStatus = status;
         VolunteerId = volunteerId;
         Nickname = nickname;
     }
     
-    public Guid Id { get; private set; }
+    public PetId Id { get; private set; }
     public Guid VolunteerId { get; private set; }
     public string Nickname { get; private set; } = default!;
-    public Species Species { get; private set; } = default!;
+    public Species.Species Species { get; private set; } = default!;
     public string Description { get; private set; } = default!;
     public Breed Breed { get; private set; } = default!;
     public string Colour { get; private set; } = default!;
@@ -43,7 +45,7 @@ public class Pet
     public PaymentDetails PaymentDetails { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; } = default!;
     
-    public static Result<Pet> Create(Status status, Guid volunteerId, string nickname)
+    public static Result<Pet> Create(PetId petId, Status status, Guid volunteerId, string nickname)
     {
         if (string.IsNullOrWhiteSpace(nickname))
         {
@@ -61,7 +63,7 @@ public class Pet
             return Result.Failure<Pet>($"'{nameof(status)}' is not a valid status.");
         }
         
-        var pet = new Pet(status, volunteerId, nickname);
+        var pet = new Pet(petId, status, volunteerId, nickname);
 
         return Result.Success(pet);
     }

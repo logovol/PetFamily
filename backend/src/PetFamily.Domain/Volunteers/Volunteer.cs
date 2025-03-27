@@ -1,8 +1,8 @@
 using CSharpFunctionalExtensions;
 
-namespace PetFamily.Domain.Volunteer;
+namespace PetFamily.Domain.Volunteers;
 
-public class Volunteer
+public class Volunteer 
 {
     private readonly List<Pet> _pets = [];
     
@@ -11,13 +11,14 @@ public class Volunteer
     {
     }
     
-    private Volunteer(string fullName, string description)
+    private Volunteer(VolunteerId volunteerId, string fullName, string description)
     {
+        Id = volunteerId;
         FullName = fullName;
         Description = description;
     }
     
-    public Guid Id { get; private set; }
+    public VolunteerId Id { get; private set; }
     public string FullName { get; private set; } = default!;
     public string Email { get; private set; } = default!;
     public string Description { get; private set; } = default!;
@@ -31,7 +32,7 @@ public class Volunteer
     public List<Pet> Available => _pets.FindAll(x => x.PetStatus == Pet.Status.Available);
     public List<Pet> InTreatment => _pets.FindAll(x => x.PetStatus == Pet.Status.InTreatment);
     
-    public static Result<Volunteer> Create(string fullName, string description)
+    public static Result<Volunteer> Create(VolunteerId volunteerId, string fullName, string description)
     {
         if (string.IsNullOrWhiteSpace(fullName))
         {
@@ -41,7 +42,7 @@ public class Volunteer
         if (string.IsNullOrWhiteSpace(description))
             return Result.Failure<Volunteer>("Description is required.");
         
-        var volunteer = new Volunteer(fullName, description);
+        var volunteer = new Volunteer(volunteerId, fullName, description);
         return Result.Success(volunteer);
     }
 }
