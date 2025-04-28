@@ -3,27 +3,26 @@ using PetFamily.Domain.Species;
 
 namespace PetFamily.Domain.Volunteers;
 
-public class Pet
+public class Pet : Shared.Entity<PetId>
 {
     // ef core
-    private Pet()
+    private Pet(PetId id) : base(id)
     {
     }
     
-    private Pet(PetId petId, Status status, Guid volunteerId, string nickname)
+    private Pet(PetId petId, Status status, string nickname)
+        : base(petId)
     {
         Id = petId;
         PetStatus = status;
-        VolunteerId = volunteerId;
         Nickname = nickname;
     }
     
     public PetId Id { get; private set; }
-    public Guid VolunteerId { get; private set; }
     public string Nickname { get; private set; } = default!;
-    public Species.Species Species { get; private set; } = default!;
+    public SpeciesId SpeciesId { get; private set; } = default!;
     public string Description { get; private set; } = default!;
-    public Breed Breed { get; private set; } = default!;
+    public BreedId BreedId { get; private set; } = default!;
     public string Colour { get; private set; } = default!;
     public string HealthInformation { get; private set; } = default!;
     public string Address { get; private set; } = default!;
@@ -42,19 +41,14 @@ public class Pet
     }
     
     public Status PetStatus { get; private set; }
-    public PaymentDetails PaymentDetails { get; private set; } = default!;
+    public PaymentDetails? PaymentDetails { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; } = default!;
     
-    public static Result<Pet> Create(PetId petId, Status status, Guid volunteerId, string nickname)
+    public static Result<Pet> Create(PetId petId, Status status, string nickname)
     {
         if (string.IsNullOrWhiteSpace(nickname))
         {
             return Result.Failure<Pet>($"'{nameof(nickname)}' cannot be null or empty.");
-        }
-
-        if (Guid.Empty == volunteerId)
-        {
-            return Result.Failure<Pet>($"'{nameof(volunteerId)}' cannot be empty.");
         }
         
         // Check to prevent the default value.
@@ -63,7 +57,7 @@ public class Pet
             return Result.Failure<Pet>($"'{nameof(status)}' is not a valid status.");
         }
         
-        var pet = new Pet(petId, status, volunteerId, nickname);
+        var pet = new Pet(petId, status, nickname);
 
         return Result.Success(pet);
     }

@@ -2,6 +2,10 @@ namespace PetFamily.Domain.Volunteers;
 
 public record SocialMediaDetails
 {
-    //public Guid Id { get; private set; }
-    public List<string> Name { get; private set; }
+    public List<SocialMedia> SocialMedias { get; private set; }
+}
+
+public record SocialMedia
+{
+    public string Name { get; private set; } = default!;
 }

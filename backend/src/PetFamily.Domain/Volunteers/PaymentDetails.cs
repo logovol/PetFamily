@@ -1,8 +1,12 @@
 namespace PetFamily.Domain.Volunteers;
 
-public class PaymentDetails
+public record PaymentDetails
 {
-    public Guid Id { get; private set; }
-    public string CardNumber { get; private set; } = default!;
-    public string CardHolderName { get; private set; } = default!;
+    public List<Payment> Payments { get; set; }
+}
+
+public record Payment
+{
+    public string Name { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
 }
