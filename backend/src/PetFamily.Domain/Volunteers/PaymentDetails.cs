@@ -2,11 +2,11 @@ namespace PetFamily.Domain.Volunteers;
 
 public record PaymentDetails
 {
-    public List<Payment> Payments { get; set; }
+    public List<Payment> Payments { get; }
 }
 
 public record Payment
 {
-    public string Name { get; private set; } = default!;
-    public string Description { get; private set; } = default!;
+    public string Name { get; } = default!;
+    public string Description { get; } = default!;
 }
