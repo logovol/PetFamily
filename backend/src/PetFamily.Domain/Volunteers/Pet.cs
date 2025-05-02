@@ -1,9 +1,9 @@
-using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species;
 
 namespace PetFamily.Domain.Volunteers;
 
-public class Pet : Shared.Entity<PetId>
+public class Pet : Entity<PetId>
 {
     // ef core
     private Pet(PetId id) : base(id)
@@ -30,7 +30,7 @@ public class Pet : Shared.Entity<PetId>
     public double Height { get; private set; }
     public string PhoneNumber { get; private set; } = default!;
     public bool Sterilized  { get; private set; }
-    public DateTime BirthDate { get; private set; } = default!;
+    public DateTime BirthDate { get; private set; }
     public bool Vaccinated { get; private set; }
 
     public enum Status
@@ -41,24 +41,25 @@ public class Pet : Shared.Entity<PetId>
     }
     
     public Status PetStatus { get; private set; }
-    public PaymentDetails? PaymentDetails { get; private set; } = default!;
-    public DateTime CreatedAt { get; private set; } = default!;
+    public PaymentDetails? PaymentDetails { get; private set; }
+    public DateTime CreatedAt { get; private set; }
     
     public static Result<Pet> Create(PetId petId, Status status, string nickname)
     {
         if (string.IsNullOrWhiteSpace(nickname))
         {
-            return Result.Failure<Pet>($"'{nameof(nickname)}' cannot be null or empty.");
+            return $"'{nameof(nickname)}' cannot be null or empty.";
         }
         
         // Check to prevent the default value.
         if (!Enum.IsDefined(typeof(Status), status))
         {
-            return Result.Failure<Pet>($"'{nameof(status)}' is not a valid status.");
+            return $"'{nameof(status)}' is not a valid status.";
         }
         
         var pet = new Pet(petId, status, nickname);
 
-        return Result.Success(pet);
+        //return Result<Pet>.Success(pet);
+        return pet;
     }
 }

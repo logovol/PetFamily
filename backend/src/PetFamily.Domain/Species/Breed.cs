@@ -1,4 +1,4 @@
-using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Species;
 
@@ -22,12 +22,12 @@ public class Breed : Shared.Entity<BreedId>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<Breed>($"'{nameof(name)}' cannot be null or empty.");
+            return $"'{nameof(name)}' cannot be null or empty.";
         }
         
         var breed = new Breed(breedId, name);
 
-        return Result.Success(breed);
+        return breed;
     }
 }
 

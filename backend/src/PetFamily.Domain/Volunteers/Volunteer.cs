@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volunteers;
 
@@ -49,13 +49,16 @@ public sealed class Volunteer : Shared.Entity<VolunteerId>
     {
         if (string.IsNullOrWhiteSpace(fullName))
         {
-            return Result.Failure<Volunteer>("Volunteer is required.");
+            //return Result<Volunteer>.Failure("Volunteer is required.");
+            return "Volunteer is required.";
         }
         
         if (string.IsNullOrWhiteSpace(description))
-            return Result.Failure<Volunteer>("Description is required.");
+            return "Description is required.";
         
         var volunteer = new Volunteer(volunteerId, fullName, description);
-        return Result.Success(volunteer);
+        
+        //return Result<Volunteer>.Success(volunteer);
+        return volunteer;
     }
 }
