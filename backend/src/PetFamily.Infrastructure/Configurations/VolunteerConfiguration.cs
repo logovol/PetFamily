@@ -34,9 +34,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             d.ToJson();
             d.OwnsMany(n => n.SocialMedias, sd =>
+            {
                 sd.Property(p => p.Name)
                     .IsRequired()
-                    .HasMaxLength(Constants.MAX_NAME_LENGTH));
+                    .HasMaxLength(Constants.MAX_NAME_LENGTH);
+                sd.Property(p => p.Url)
+                    .IsRequired();
+            });
         });
         
         builder.OwnsOne(v => v.PaymentDetails, d =>

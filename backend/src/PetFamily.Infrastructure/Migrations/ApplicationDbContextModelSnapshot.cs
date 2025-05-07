@@ -219,7 +219,7 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.HasKey("PetId")
                                 .HasName("pk_pets");
 
-                            b1.ToTable("pets", (string)null);
+                            b1.ToTable("pets");
 
                             b1.ToJson("PaymentDetails");
 
@@ -249,7 +249,7 @@ namespace PetFamily.Infrastructure.Migrations
                                     b2.HasKey("PaymentDetailsPetId", "__synthesizedOrdinal")
                                         .HasName("pk_pets");
 
-                                    b2.ToTable("pets", (string)null);
+                                    b2.ToTable("pets");
 
                                     b2.WithOwner()
                                         .HasForeignKey("PaymentDetailsPetId")
@@ -264,6 +264,53 @@ namespace PetFamily.Infrastructure.Migrations
 
             modelBuilder.Entity("PetFamily.Domain.Volunteers.Volunteer", b =>
                 {
+                    b.OwnsOne("PetFamily.Domain.Volunteers.SocialMediaDetails", "SocialMediaDetails", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers");
+
+                            b1.ToJson("SocialMediaDetails");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("PetFamily.Domain.Volunteers.SocialMedia", "SocialMedias", b2 =>
+                                {
+                                    b2.Property<Guid>("SocialMediaDetailsVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("__synthesizedOrdinal")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.Property<string>("Url")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("SocialMediaDetailsVolunteerId", "__synthesizedOrdinal")
+                                        .HasName("pk_volunteers");
+
+                                    b2.ToTable("volunteers");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("SocialMediaDetailsVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_social_media_details_volunteer_id");
+                                });
+
+                            b1.Navigation("SocialMedias");
+                        });
+
                     b.OwnsOne("PetFamily.Domain.Volunteers.PaymentDetails", "PaymentDetails", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
@@ -272,7 +319,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.HasKey("VolunteerId");
 
-                            b1.ToTable("volunteers", (string)null);
+                            b1.ToTable("volunteers");
 
                             b1.ToJson("PaymentDetails");
 
@@ -301,7 +348,7 @@ namespace PetFamily.Infrastructure.Migrations
 
                                     b2.HasKey("PaymentDetailsVolunteerId", "__synthesizedOrdinal");
 
-                                    b2.ToTable("volunteers", (string)null);
+                                    b2.ToTable("volunteers");
 
                                     b2.WithOwner()
                                         .HasForeignKey("PaymentDetailsVolunteerId")
@@ -309,49 +356,6 @@ namespace PetFamily.Infrastructure.Migrations
                                 });
 
                             b1.Navigation("Payments");
-                        });
-
-                    b.OwnsOne("PetFamily.Domain.Volunteers.SocialMediaDetails", "SocialMediaDetails", b1 =>
-                        {
-                            b1.Property<Guid>("VolunteerId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
-
-                            b1.HasKey("VolunteerId");
-
-                            b1.ToTable("volunteers", (string)null);
-
-                            b1.ToJson("SocialMediaDetails");
-
-                            b1.WithOwner()
-                                .HasForeignKey("VolunteerId")
-                                .HasConstraintName("fk_volunteers_volunteers_id");
-
-                            b1.OwnsMany("PetFamily.Domain.Volunteers.SocialMedia", "SocialMedias", b2 =>
-                                {
-                                    b2.Property<Guid>("SocialMediaDetailsVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("__synthesizedOrdinal")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("SocialMediaDetailsVolunteerId", "__synthesizedOrdinal")
-                                        .HasName("pk_volunteers");
-
-                                    b2.ToTable("volunteers", (string)null);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("SocialMediaDetailsVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_social_media_details_volunteer_id");
-                                });
-
-                            b1.Navigation("SocialMedias");
                         });
 
                     b.Navigation("PaymentDetails");

@@ -12,7 +12,7 @@ using PetFamily.Infrastructure;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250424151120_Initial")]
+    [Migration("20250506113709_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -296,6 +296,10 @@ namespace PetFamily.Infrastructure.Migrations
                                         .IsRequired()
                                         .HasMaxLength(100)
                                         .HasColumnType("character varying(100)");
+
+                                    b2.Property<string>("Url")
+                                        .IsRequired()
+                                        .HasColumnType("text");
 
                                     b2.HasKey("SocialMediaDetailsVolunteerId", "__synthesizedOrdinal")
                                         .HasName("pk_volunteers");
