@@ -7,6 +7,6 @@ public record PaymentDetails
 
 public record Payment
 {
-    public string Name { get; } = default!;
-    public string Description { get; } = default!;
+    public string Name { get; }
+    public string Description { get; }
 }
